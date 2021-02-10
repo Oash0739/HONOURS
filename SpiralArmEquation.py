@@ -6,8 +6,8 @@ from matplotlib.animation import PillowWriter
 from mpl_toolkits.mplot3d import Axes3D
 
 #plotting stuff
-fig, ax = plt.subplots(2, 1, constrained_layout=True,figsize=(15,15))
-fig.set_dpi(200)
+fig, ax = plt.subplots(2, 1, constrained_layout=True)
+fig.set_dpi(100)
 # ax = Axes3D(fig)
 
 
@@ -17,7 +17,7 @@ All the equations needed
     - R is radius
 omega = v_phi/R 
 kappa = np.sqrt(R(d omega^2/d R)+4omega^2)
-        d/dR(omega^2) = (-2*v_phi^2)/R^3
+    d/dR(omega^2) = (-2*v_phi^2)/R^3
 nu = (\partial^2 Phi)/(\partial z^2)
 omega_d = omega - 0.5*kappa
 phi = (omega_d+omega_0)*(T/978)+phi_D0
@@ -25,15 +25,18 @@ phi_D0 is an arbitrary offset (moves phi_d up and down)
 '''
 phi_d0 = 0
 no_time_steps = 1000
-T = np.linspace(0,1000,no_time_steps)
+maxT = 978
+T = np.linspace(0,maxT,no_time_steps)
 no_bodies = 1000
 maxR=20
 R = np.linspace(1,maxR,no_bodies)
 v_phi = 100/R 
 
 omega_list = []
-omega_d_list = []
-omega_b_list = []
+omega_d_plus_list = []
+omega_d_minus_list = []
+omega_b_plus_list = []
+omega_b_minus_list = []
 
 for i in range(no_bodies):
     omega = v_phi[i]/R[i]
@@ -43,33 +46,46 @@ for i in range(no_bodies):
     kappa1 = (-2*v_phi[i]**2)/R[i]**2  
     kappa = np.sqrt(kappa1+4*omega**2)
 
-    # nu = 
+    # nu =  #maybe the same as kappa but we shall find out
 
-    omega_d = omega-0.5*kappa
-    omega_d_list.append(omega_d)
+    omega_d_plus = omega+0.5*kappa
+    omega_d_minus = omega-0.5*kappa
+    omega_d_plus_list.append(omega_d_plus)
+    omega_d_minus_list.append(omega_d_minus)
+
+    # omega_b_plus = omega+0.5*nu
+    # omega_b_minus = omega+0.5*nu
+    # omega_b_plus_list.append(omega_b_plus)
+    # omega_b_minus_list.append(omega_b_minus)
 
 phi_d_plus_list = []
 phi_d_minus_list =[]
 phi_b_plus_list = []
 phi_b_minus_list=[]
 omega_time_list=[]
-for t in range(len(T)):
+omega6_time_list=[]
+
+
+for t in range(no_time_steps):
     phi_d_plus=[]
     phi_d_minus=[]
     phi_b_plus=[]
     phi_b_minus = []
     omega_time=[]
+    omega6_time=[]
     for i in range(no_bodies):
-        phi_d_plus.append((omega_d_list[i]+omega_list[i])*T[t]/978+phi_d0)
-        phi_d_minus.append((omega_d_list[i]-omega_list[i])*T[t]/978+phi_d0)
-        phi_b_plus.append((omega_d_list[i]/2+omega_list[i])*T[t]/978+phi_d0)
-        phi_b_minus.append((omega_d_list[i]/2-omega_list[i])*T[t]/978+phi_d0)
+        phi_d_plus.append((omega_d_plus_list[i]+omega_list[i])*T[t]/978+phi_d0)
+        phi_d_minus.append((omega_d_minus_list[i]+omega_list[i])*T[t]/978+phi_d0)
+        phi_b_plus.append((omega_d_plus_list[i]/2+omega_list[i])*T[t]/978+phi_d0) #change to omega_b_plus_list
+        phi_b_minus.append((omega_d_minus_list[i]/2+omega_list[i])*T[t]/978+phi_d0) #change to omega_b_minus_list
         omega_time.append(omega_list[i]*T[t]/978+phi_d0)
+        omega6_time.append(omega_list[i]*T[t]/(978*6))
     phi_d_plus_list.append(phi_d_plus)
     phi_d_minus_list.append(phi_d_minus)
     phi_b_plus_list.append(phi_b_plus)
     phi_b_minus_list.append(phi_b_minus)
     omega_time_list.append(omega_time)
+    omega6_time_list.append(omega6_time)
 
 
 t = 0
@@ -77,30 +93,41 @@ def animate(i):
     global t
     ax[0].clear()
     ax[1].clear()
-    ax[0].plot(R,phi_b_plus_list[t],label=r' $\left(\frac{\Omega_d}{2}+\Omega\right)t$',linewidth = 0.1,linestyle = 'dashdot',color = 'blue')
-    ax[0].plot(R,omega_time_list[t],'k',label = r'$\Omega',linewidth=0.1)
-    ax[0].plot(R,phi_b_minus_list[t],label=r' $\left(\frac{\Omega_d}{2}-\Omega\right)t$',linewidth=0.1,linestyle = 'dashed',color = 'red')
-    ax[1].plot(R,phi_d_plus_list[t],label=r'$\left(\Omega_d+\Omega\right)t$',linewidth=0.10,linestyle = 'dashdot',color = 'blue')
-    ax[1].plot(R,omega_time_list[t],'k',label = r'$\Omega',linewidth=0.1)
-    ax[1].plot(R,phi_d_minus_list[t],label = r'$\left(\Omega_d-\Omega\right)t$',linewidth=0.1,linestyle = 'dashed',color = 'red')
-    ax[0].legend()  
-    ax[1].legend()
+    linewide = 3
+    ax[0].plot(R,phi_b_plus_list[t],label=r' $\Omega + \frac{\nu}{m}$',linewidth = linewide,linestyle = 'dashdot',color = 'blue')
+    ax[0].plot(R,omega_time_list[t],'k',label = r'$\Omega$',linewidth=linewide)
+    ax[0].plot(R,phi_b_minus_list[t],label=r' $\Omega - \frac{\nu}{m}$',linewidth=linewide,linestyle = 'dashed',color = 'red')
+    ax[1].plot(R,phi_d_plus_list[t],label=r'$\Omega + \frac{\kappa}{m}$',linewidth=linewide,linestyle = 'dashdot',color = 'blue')
+    ax[1].plot(R,omega_time_list[t],'k',label = r'$\Omega$',linewidth=linewide)
+    ax[1].plot(R,phi_d_minus_list[t],label = r'$\Omega - \frac{\kappa}{m}$',linewidth=linewide,linestyle = 'dashed',color = 'red')
+    ax[1].plot(R,omega6_time_list[t],label=r'$\frac{\Omega}{6}$',linewidth=linewide,color='black',linestyle = 'dotted')
+    ax[0].legend(title = r'$\Omega_b =$ ')  
+    ax[1].legend(title = r'$\Omega_d =$ ')
+    b = r'$\phi_b($'
+    d = r'$\phi_d($'
+    comma = ','
+    close = ')'
+    yes = max(phi_b_plus_list[t])
+    yep = max(phi_d_plus_list[t])
+    equal = '='
+    ax[0].annotate(f'{b}{1}{comma}{t}{close}{equal}{yes}', (1,max(phi_b_plus_list[t])))
+    ax[1].annotate(f'{d}{1}{comma}{t}{close}{equal}{yep}', (1,max(phi_d_plus_list[t])))
     x='t='
-    fig.suptitle(f'{x}{t}')
-    ax[0].set_title('Bending waves')
-    ax[1].set_title('Density waves')
-    ax[0].set_xlabel('Radius')
-    ax[0].set_ylabel(r'$\phi_d(R,t)$')
+    myr = 'Myr'
+    fig.suptitle(f'{x}{t}{myr}')
+    ax[0].set_title(r'Bending waves for $m=2$ $\Omega_b + \Omega$ ')
+    ax[1].set_title(r'Density waves for $m=2$ $\Omega_d + \Omega$ ')
+    ax[1].set_xlabel(r'Radius (kpc)')
+    ax[0].set_ylabel(r'$\phi_d(R,t)$ (km s$^{-1}$ kpc$^{-1}$)')
+    ax[1].set_ylabel(r'$\phi_b(R,t)$ (km s$^{-1}$ kpc$^{-1}$)')
     ax[0].set_ylim(0,max(phi_d_plus_list[-1]))
     ax[1].set_ylim(0,max(phi_d_plus_list[-1]))
-    # ax1.set_xlim(-maxR,maxR)
     t += 1
-anim = animation.FuncAnimation(fig,animate,frames=360,interval=20)
-plt.show()
-# writer = PillowWriter(fps=20, codec='libx264', bitrate=2) 
-# filelocatation = "C:/Users/oasht/Documents/Uni/honours/PROJECT/GIFS" 
-# filename = "PHI_Equations.gif"
-# filename = filelocatation+filename
-# anim.save(filename,writer = writer)
-
+anim = animation.FuncAnimation(fig,animate,frames=no_time_steps,interval=20)
+# plt.show()
+writer = PillowWriter(fps=20, codec='libx264', bitrate=2) 
+filelocation = "C:/Users/oasht/Dropbox/My PC (DESKTOP-TKRDL9R)/Documents/Uni/Honours/Project/GIFS" #change \ to /
+filename = "/PHI_Equations.gif" #make sure to add / to the beginning
+filename = filelocation+filename
+anim.save(filename,writer = writer)
 
