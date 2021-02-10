@@ -1,3 +1,10 @@
+'''
+Oliver Ashton 2021
+School of Physics, The University of Sydney
+Spiral Arm Equation as per Hawthorn-Bland & Garcia, 2020
+We are aimming animate the density wave and bending wave propergation through a Galaxy using the equations below
+'''
+
 import numpy as np
 from numpy import pi,cos,sin
 import matplotlib.pyplot as plt
@@ -5,11 +12,9 @@ import matplotlib.animation as animation
 from matplotlib.animation import PillowWriter
 from mpl_toolkits.mplot3d import Axes3D
 
-#plotting stuff
+# Figure creation
 fig, ax = plt.subplots(2, 1, constrained_layout=True)
 fig.set_dpi(100)
-# ax = Axes3D(fig)
-
 
 '''
 All the equations needed
@@ -23,6 +28,7 @@ omega_d = omega - 0.5*kappa
 phi = (omega_d+omega_0)*(T/978)+phi_D0
 phi_D0 is an arbitrary offset (moves phi_d up and down)
 '''
+
 phi_d0 = 0
 no_time_steps = 1000
 maxT = 978
@@ -37,6 +43,11 @@ omega_d_plus_list = []
 omega_d_minus_list = []
 omega_b_plus_list = []
 omega_b_minus_list = []
+
+'''
+We are creating a predetermined number of bodies, calculating the omega, omega_d, kappa, and nu.
+Here we assume m=2.
+'''
 
 for i in range(no_bodies):
     omega = v_phi[i]/R[i]
@@ -65,6 +76,9 @@ phi_b_minus_list=[]
 omega_time_list=[]
 omega6_time_list=[]
 
+'''
+We iterate over each body, for each time-step to determine the evolution of phi_b and phi_d with respect to radius and time.
+'''
 
 for t in range(no_time_steps):
     phi_d_plus=[]
@@ -74,12 +88,13 @@ for t in range(no_time_steps):
     omega_time=[]
     omega6_time=[]
     for i in range(no_bodies):
-        phi_d_plus.append((omega_d_plus_list[i]+omega_list[i])*T[t]/978+phi_d0)
-        phi_d_minus.append((omega_d_minus_list[i]+omega_list[i])*T[t]/978+phi_d0)
-        phi_b_plus.append((omega_d_plus_list[i]/2+omega_list[i])*T[t]/978+phi_d0) #change to omega_b_plus_list
-        phi_b_minus.append((omega_d_minus_list[i]/2+omega_list[i])*T[t]/978+phi_d0) #change to omega_b_minus_list
-        omega_time.append(omega_list[i]*T[t]/978+phi_d0)
-        omega6_time.append(omega_list[i]*T[t]/(978*6))
+        time_step = T[t]/978 + phi_d0
+        phi_d_plus.append((omega_d_plus_list[i]+omega_list[i])*time_step)
+        phi_d_minus.append((omega_d_minus_list[i]+omega_list[i])*time_step)
+        phi_b_plus.append((omega_d_plus_list[i]/2+omega_list[i])*time_step) #change to omega_b_plus_list
+        phi_b_minus.append((omega_d_minus_list[i]/2+omega_list[i])*time_step) #change to omega_b_minus_list
+        omega_time.append(omega_list[i]*time_step)
+        omega6_time.append(omega_list[i]*time_step/6)
     phi_d_plus_list.append(phi_d_plus)
     phi_d_minus_list.append(phi_d_minus)
     phi_b_plus_list.append(phi_b_plus)
