@@ -75,9 +75,11 @@ phi_b_plus_list = []
 phi_b_minus_list=[]
 omega_time_list=[]
 omega6_time_list=[]
+omega_0 = 1.3
 
 '''
 We iterate over each body, for each time-step to determine the evolution of phi_b and phi_d with respect to radius and time.
+UPDATE: the for loop was using omega_list, instead of omega_0.
 '''
 
 for t in range(no_time_steps):
@@ -89,10 +91,10 @@ for t in range(no_time_steps):
     omega6_time=[]
     for i in range(no_bodies):
         time_step = T[t]/978 + phi_d0
-        phi_d_plus.append((omega_d_plus_list[i]+omega_list[i])*time_step)
-        phi_d_minus.append((omega_d_minus_list[i]+omega_list[i])*time_step)
-        phi_b_plus.append((omega_d_plus_list[i]/2+omega_list[i])*time_step) #change to omega_b_plus_list
-        phi_b_minus.append((omega_d_minus_list[i]/2+omega_list[i])*time_step) #change to omega_b_minus_list
+        phi_d_plus.append((omega_d_plus_list[i]+omega_0)*time_step)
+        phi_d_minus.append((omega_d_minus_list[i]+omega_0)*time_step)
+        phi_b_plus.append((omega_d_plus_list[i]/2+omega_0)*time_step) #change to omega_b_plus_list
+        phi_b_minus.append((omega_d_minus_list[i]/2+omega_0)*time_step) #change to omega_b_minus_list
         omega_time.append(omega_list[i]*time_step)
         omega6_time.append(omega_list[i]*time_step/6)
     phi_d_plus_list.append(phi_d_plus)
@@ -141,8 +143,7 @@ def animate(i):
 anim = animation.FuncAnimation(fig,animate,frames=no_time_steps,interval=20)
 # plt.show()
 writer = PillowWriter(fps=20, codec='libx264', bitrate=2) 
-filelocation = "C:/Users/oasht/Dropbox/My PC (DESKTOP-TKRDL9R)/Documents/Uni/Honours/Project/GIFS" #change \ to /
+filelocation = "C:/Users/oasht/Documents/Uni/honours/PROJECT/GIFS" #change \ to /
 filename = "/PHI_Equations.gif" #make sure to add / to the beginning
 filename = filelocation+filename
 anim.save(filename,writer = writer)
-
