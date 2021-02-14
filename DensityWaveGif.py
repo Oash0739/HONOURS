@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib.animation import PillowWriter
 from mpl_toolkits.mplot3d import Axes3D
-# from PIL import Image
 '''
 All the equations needed
     - v_phi is angular velocity
@@ -21,7 +20,7 @@ phi_D0 is an arbitrary offset (moves phi_d up and down)
 phi_d0 = 0
 maxT = 978
 T = np.linspace(0,maxT,maxT)
-no_bodies = 10
+no_bodies = 1000
 maxR=16.2
 R = np.linspace(1,maxR,no_bodies)
 v_phi = 100/R 
@@ -71,14 +70,32 @@ for t in range(maxT):
     omega_time_list.append(omega_time)
 
 '''
-Here we animate the density wave through the Milky Way, with a radius of 16.2 kpc
+Applying the bending wave equations:
+nu =(d^2/dz^2)Phi= 7.25 km/s (as per McMillan 2016)
+Omega_b = Omega +/- nu/m
+z_b = z_0* cos(2[phi-Omega_b*T])*cos(nu*T)
 '''
-# fig1 = plt.figure()
-# ax1 = fig1.add_subplot(1,1,1)
-# fig1.set_dpi(100)
-fig1,ax1 = plt.subplots(1,1)
+nu = 7.25
+omega_list = []
+omega_b_plus_list = []
+omega_b_minus_list = []
 
+for i in range(no_bodies):
+    omega_b_plus = omega[i]+0.5*nu
+    omega_b_minus = omega[i]-0.5*nu
+    omega_b_plus_list.append(omega_b_plus)
+    omega_b_minus_list.append(omega_b_minus)
 
+z_plus_time = []
+z_minus_time = []
+for t in range(maxT):
+    z_plus = []
+    z_minus = []
+    
+
+'''
+Converting from polar to Cartesian
+'''
 def x(r,theta):
     return r*cos(theta)
 def y(r,theta):
@@ -103,6 +120,14 @@ for i in range(maxT):
     x_d_t_minus.append(x_d_minus)
     y_d_t_minus.append(y_d_minus)
 
+
+'''
+Here we animate the density wave through the Milky Way, with a radius of 16.2 kpc
+'''
+
+
+fig1,ax1 = plt.subplots(1,1)
+
 t = 0
 def animate(i):
     global t
@@ -118,4 +143,4 @@ def animate(i):
 anim = animation.FuncAnimation(fig1,animate,frames = maxT,interval = 20)
 # plt.show()
 writer = PillowWriter(fps=20, codec='libx264', bitrate=2) 
-anim.save("C:/Users/oasht/Documents/Uni/honours/PROJECT/GIFS/densitywave.gif",writer = writer)     
+anim.save("C:/Users/oasht/Dropbox/My PC (DESKTOP-TKRDL9R)/Documents/Uni/Honours/Project/densitywave.gif",writer = writer)     
