@@ -18,9 +18,9 @@ phi_D0 is an arbitrary offset (moves phi_d up and down)
 '''
 
 phi_d0 = 0
-maxT = 978
+maxT = 100
 T = np.linspace(0,maxT,maxT)
-no_bodies = 1000
+no_bodies = 10
 maxR=16.2
 R = np.linspace(1,maxR,no_bodies)
 v_phi = 100/R 
@@ -36,7 +36,6 @@ Here we assume m=2.
 for i in range(no_bodies):
     omega = v_phi[i]/R[i]
     omega_list.append(omega)
-    dOdR = np.gradient(omega**2/R[i]) 
 
     kappa1 = (-2*v_phi[i]**2)/R[i]**2  
     kappa = np.sqrt(kappa1+4*omega**2)
@@ -81,17 +80,28 @@ omega_b_plus_list = []
 omega_b_minus_list = []
 
 for i in range(no_bodies):
-    omega_b_plus = omega[i]+0.5*nu
-    omega_b_minus = omega[i]-0.5*nu
+    omega = v_phi[i]/R[i]
+    omega_b_plus = omega+(0.5*nu)
+    omega_b_minus = omega-0.5*nu
     omega_b_plus_list.append(omega_b_plus)
     omega_b_minus_list.append(omega_b_minus)
+
+z_0 = 2
+
+z = lambda phi,t,omega_b: z_0*cos(2*(phi-omega_b*t)*cos(nu*t))
 
 z_plus_time = []
 z_minus_time = []
 for t in range(maxT):
     z_plus = []
     z_minus = []
-    
+    for i in range(no_bodies):
+        z_minus.append(z(phi_d_minus_list[t][i],T[t],omega_b_minus_list[i])) #errors might arise here
+        z_plus.append(z(phi_d_plus_list[t][i],T[t],omega_b_plus_list[i]))
+    z_plus_time.append(z_plus)
+    z_minus_time.append(z_minus)
+
+
 
 '''
 Converting from polar to Cartesian
@@ -119,28 +129,42 @@ for i in range(maxT):
     y_d_t_plus.append(y_d_plus)
     x_d_t_minus.append(x_d_minus)
     y_d_t_minus.append(y_d_minus)
-
-
+xy_t = np.empty((1,maxT))
+xy = np.zeros((len(y_d_plus),len(x_d_plus)))
+print(xy.shape)
+for t in range(maxT):
+    for i in range(len(y_d_plus)):
+        for j in range(len(x_d_plus)):
+            xy[i][j] = z_plus_time[t]
+    np.append(xy_t,xy,axis = 0)
 '''
 Here we animate the density wave through the Milky Way, with a radius of 16.2 kpc
 '''
 
 
-fig1,ax1 = plt.subplots(1,1)
+fig1=plt.figure()
+ax1=fig1.add_subplot(111,projection = '3d')
 
-t = 0
-def animate(i):
-    global t
-    t+=1
-    ax1.clear()
-    # z = np.zeros((R,1))
-    ax1.plot(x_d_t_plus[t],y_d_t_plus[t],color = 'blue',label = r'$\Omega + \frac{\kappa}{2}$')
-    ax1.plot(x_d_t_minus[t],y_d_t_minus[t],color = 'red',label = r'$\Omega - \frac{\kappa}{2}$')
-    ax1.legend()
-    ax1.set_xlim(-maxR,maxR)
-    ax1.set_ylim(-maxR,maxR)
-    fig1.suptitle(f't = {t}')
-anim = animation.FuncAnimation(fig1,animate,frames = maxT,interval = 20)
+# ax1 = fig1.add_subplot(1,1,1,projection = '3d')
+
+
+# fig1,ax1 = plt.subplots(1,1)
+
+# t = 0
+# def animate(i):
+#     global t
+#     t+=1
+#     ax1.clear()
+#     # z = np.zeros((R,1))
+#     # ax1.plot(x_d_t_plus[t],y_d_t_plus[t],color = 'blue',label = r'$\Omega + \frac{\kappa}{2}$')
+#     ax1.plot(x_d_t_plus[t],y_d_t_plus[t],z_plus_time[t],label = r'$\Omega + \frac{\kappa}{2}$')
+#     # ax1.plot(x_d_t_minus[t],y_d_t_minus[t],color = 'red',label = r'$\Omega - \frac{\kappa}{2}$')
+#     ax1.legend()
+#     ax1.set_xlim(-maxR,maxR)
+#     ax1.set_ylim(-maxR,maxR)
+#     ax1.set_zlim(-2,2)
+#     fig1.suptitle(f't = {t}')
+# anim = animation.FuncAnimation(fig1,animate,frames = maxT,interval = 20)
 # plt.show()
-writer = PillowWriter(fps=20, codec='libx264', bitrate=2) 
-anim.save("C:/Users/oasht/Dropbox/My PC (DESKTOP-TKRDL9R)/Documents/Uni/Honours/Project/densitywave.gif",writer = writer)     
+# writer = PillowWriter(fps=20, codec='libx264', bitrate=2) 
+# anim.save("C:/Users/oasht/Dropbox/My PC (DESKTOP-TKRDL9R)/Documents/Uni/Honours/Project/densitywave.gif",writer = writer)     
