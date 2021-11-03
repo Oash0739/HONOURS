@@ -4,5 +4,7 @@ If you would like to test potential functions, data I have collected is availabl
 For access to simulation data, contact Thorsten Tepper-Garcia at thorsten.teppergarcia@sydney.edu.au. 
 
 File content description:
+
 flatfieldanime.mp4: .mp4 of the Bland-Hawthorn & Tepper-Garcia smooth potential impact simulation with a Flat Field transformation.
+
 flatfieldanime_polar.mp4: .mp4 of the Bland-Hawthorn & Tepper-Garcia smooth potential impact simulation with a Flat Field transformation in polar coordinates.
