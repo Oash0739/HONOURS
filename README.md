@@ -13,7 +13,9 @@ For access to simulation data, contact Thorsten Tepper-Garcia at thorsten.tepper
 
 - csv_files: contains .csv files of data collected labeled by time step in megayears. 
 
+- Theory Spirals: .webm videos related to Section 4 'Theory' of the thesis. Credit: Ingo Berg: Rendering a Galaxy with the density wave theory (https://beltoforion.de/en/spiral_galaxy_renderer/)
 - 
+
 
 ## Code file description: 
 
