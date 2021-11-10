@@ -16,4 +16,5 @@ For access to simulation data, contact Thorsten Tepper-Garcia at thorsten.tepper
 - Theory Spirals: .webm videos related to Section 4 'Theory' of the thesis. Credit: Ingo Berg: Rendering a Galaxy with the density wave theory (https://beltoforion.de/en/spiral_galaxy_renderer/).
 - Model and Simulation Comparison: .png images of simulation overlaid with plots of the spiral arm models from Appendix A, B and C.
 - Mean Angular Difference Plots: .png of Figures 16, 19 and 21 from my thesis in digital form. 
+- Polar Data and Model Comparison: .png images of polar data overlayed with models spoken on in my thesis from Appendix D and E.
 - Galactoseismology: the Milky Way's Response to a Major Impact Event: .pdf of my thesis.
