@@ -10,7 +10,7 @@ For access to simulation data, contact Thorsten Tepper-Garcia at thorsten.tepper
 - flatfieldanime.mp4: .mp4 of the Bland-Hawthorn & Tepper-Garcia smooth potential impact simulation with a Flat Field transformation.
 
 - flatfieldanime_polar.mp4: .mp4 of the Bland-Hawthorn & Tepper-Garcia smooth potential impact simulation with a Flat Field transformation in polar coordinates.
-- Mean 
+- Mean density for annuli of increasing radii: .mp4 of mean density for annuli of different radius in the simulation over time.
 - csv_files: contains .csv files of data collected labeled by time step in megayears. 
 
 - Theory Spirals: .webm videos related to Section 4 'Theory' of the thesis. Credit: Ingo Berg: Rendering a Galaxy with the density wave theory (https://beltoforion.de/en/spiral_galaxy_renderer/).
