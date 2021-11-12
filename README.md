@@ -6,7 +6,7 @@ If you would like to test potential functions, data I have collected is availabl
 For access to simulation data, contact Thorsten Tepper-Garcia at thorsten.teppergarcia@sydney.edu.au.
 
 ## File and Folder Description:
-
+- Galactoseismology: the Milky Way's Response to a Major Impact Event: .pdf of my thesis.
 - flatfieldanime.mp4: .mp4 of the Bland-Hawthorn & Tepper-Garcia smooth potential impact simulation with a Flat Field transformation.
 
 - flatfieldanime_polar.mp4: .mp4 of the Bland-Hawthorn & Tepper-Garcia smooth potential impact simulation with a Flat Field transformation in polar coordinates.
@@ -17,4 +17,4 @@ For access to simulation data, contact Thorsten Tepper-Garcia at thorsten.tepper
 - Model and Simulation Comparison: .png images of simulation overlaid with plots of the spiral arm models from Appendix A, B and C.
 - Mean Angular Difference Plots: .png of Figures 16, 19 and 21 from my thesis in digital form. 
 - Polar Data and Model Comparison: .png images of polar data overlayed with models spoken on in my thesis from Appendix D and E.
-- Galactoseismology: the Milky Way's Response to a Major Impact Event: .pdf of my thesis.
+
