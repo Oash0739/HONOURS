@@ -6,13 +6,10 @@ If you would like to test potential functions, data I have collected is availabl
 For access to simulation data, contact Thorsten Tepper-Garcia at thorsten.teppergarcia@sydney.edu.au.
 
 ## File and Folder Description:
-- Galactoseismology: the Milky Way's Response to a Major Impact Event: .pdf of my thesis.
 - flatfieldanime.mp4: .mp4 of the Bland-Hawthorn & Tepper-Garcia smooth potential impact simulation with a Flat Field transformation.
-
 - flatfieldanime_polar.mp4: .mp4 of the Bland-Hawthorn & Tepper-Garcia smooth potential impact simulation with a Flat Field transformation in polar coordinates.
 - Mean density for annuli of increasing radii: .mp4 of mean density for annuli of different radius in the simulation over time.
 - csv_files: contains .csv files of data collected labeled by time step in megayears. 
-
 - Theory Spirals: .webm videos related to Section 4 'Theory' of the thesis. Credit: Ingo Berg: Rendering a Galaxy with the density wave theory (https://beltoforion.de/en/spiral_galaxy_renderer/).
 - Model and Simulation Comparison: .png images of simulation overlaid with plots of the spiral arm models from Appendix A, B and C.
 - Mean Angular Difference Plots: .png of Figures 16, 19 and 21 from my thesis in digital form. 
